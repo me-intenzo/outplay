@@ -39,6 +39,9 @@ func _pressed() -> void:
 		position.y += 20
 	card_selected.emit(card_data)
 	
+func matches_card(card: CardData) -> bool:
+	return card_data == card
+	
 func setup_hidden(data: CardData) -> void:
 	card_data = data
 	texture_normal = load("res://assets/cards/card_back.png")

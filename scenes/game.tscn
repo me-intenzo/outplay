@@ -36,4 +36,13 @@ offset_right = 40.0
 offset_bottom = -360.0
 theme_override_constants/separation = 20
 
+[node name="Player2PlayButton" type="Button" parent="." unique_id=2005226320]
+layout_mode = 0
+offset_left = 297.0
+offset_top = -434.0
+offset_right = 419.0
+offset_bottom = -403.0
+text = "PLAYER 2 PLAY"
+
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Player2PlayButton" to="." method="_on_player_2_play_button_pressed"]
