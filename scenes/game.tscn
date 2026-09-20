@@ -20,3 +20,13 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/separation = 20
+
+[node name="PlayButton" type="Button" parent="." unique_id=396599748]
+layout_mode = 0
+offset_left = 315.0
+offset_top = 146.0
+offset_right = 409.0
+offset_bottom = 177.0
+text = "PLAY CARD"
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]

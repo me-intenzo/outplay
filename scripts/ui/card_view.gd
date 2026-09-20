@@ -4,6 +4,7 @@ extends TextureButton
 signal card_selected(card: CardData)
 
 var card_data: CardData
+var selected := false
 
 
 func setup(data: CardData) -> void:
@@ -29,5 +30,12 @@ func get_card_texture(value: int) -> Texture2D:
 func _pressed() -> void:
 	if card_data == null:
 		return
+
+	selected = !selected
+
+	if selected:
+		position.y -= 20
+	else:
+		position.y += 20
 
 	card_selected.emit(card_data)
