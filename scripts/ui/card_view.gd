@@ -37,5 +37,10 @@ func _pressed() -> void:
 		position.y -= 20
 	else:
 		position.y += 20
-
 	card_selected.emit(card_data)
+	
+func setup_hidden(data: CardData) -> void:
+	card_data = data
+	texture_normal = load("res://assets/cards/card_back.png")
+	custom_minimum_size = Vector2(128, 128)
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST

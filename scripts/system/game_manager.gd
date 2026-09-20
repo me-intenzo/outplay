@@ -14,6 +14,7 @@ var card_played := false
 
 @onready var player_hand: HBoxContainer = $PlayerHand
 @onready var play_button: Button = $PlayButton
+@onready var opponent_hand: HBoxContainer = $OpponentHand
 
 
 func _ready() -> void:
@@ -30,6 +31,7 @@ func _ready() -> void:
 
 	play_button.pressed.connect(_on_play_button_pressed)
 	display_player_hand()
+	display_opponent_hand()
 
 
 func deal_starting_hands() -> void:
@@ -57,6 +59,11 @@ func display_player_hand() -> void:
 
 		card_view.card_selected.connect(_on_card_selected)
 
+func display_opponent_hand() -> void:
+	for card in player_2.hand:
+		var card_view := CARD_SCENE.instantiate() as CardView
+		opponent_hand.add_child(card_view)
+		card_view.setup_hidden(card)
 
 func _on_card_selected(card: CardData) -> void:
 	if card_played:

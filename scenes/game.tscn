@@ -29,4 +29,11 @@ offset_right = 409.0
 offset_bottom = 177.0
 text = "PLAY CARD"
 
+[node name="OpponentHand" type="HBoxContainer" parent="." unique_id=1819817692]
+layout_mode = 0
+offset_top = -400.0
+offset_right = 40.0
+offset_bottom = -360.0
+theme_override_constants/separation = 20
+
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
