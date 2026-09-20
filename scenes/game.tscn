@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://uj5q3jbx7iok"]
+
+[ext_resource type="Script" uid="uid://cajrucflwwhrw" path="res://scripts/system/game_manager.gd" id="1_uwrxv"]
+
+[node name="Game" type="Control" unique_id=398012577]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 300.0
+offset_top = 500.0
+offset_right = 300.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uwrxv")
+
+[node name="PlayerHand" type="HBoxContainer" parent="." unique_id=1869244902]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 20
