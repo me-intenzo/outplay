@@ -4,6 +4,7 @@ extends Control
 const CARD_SCENE := preload("res://scenes/card.tscn")
 
 const POINTS_TO_WIN := 3
+const NORMAL_ROUNDS := 5
 
 var round_number := 1
 
@@ -12,6 +13,8 @@ var selected_card: CardData = null
 var player_1 := PlayerState.new()
 var player_2 := PlayerState.new()
 
+var tie_break_active := false
+var tie_break_round := 0
 var deck := Deck.new()
 var player_card_views: Array[CardView] = []
 
@@ -24,6 +27,9 @@ var player_2_played: CardData = null
 @onready var opponent_hand: HBoxContainer = $OpponentHand
 @onready var player_2_play_button: Button = $Player2PlayButton
 
+@onready var player_1_score_label: Label = $Player1Score
+@onready var player_2_score_label: Label = $Player2Score
+@onready var round_label: Label = $RoundLabel
 
 func _ready() -> void:
 	print("OUTPLAY starting...")
@@ -39,8 +45,10 @@ func _ready() -> void:
 
 	player_2_play_button.pressed.connect(_on_player_2_play_button_pressed)
 	play_button.pressed.connect(_on_play_button_pressed)
+	
 	display_player_hand()
 	display_opponent_hand()
+	update_ui()
 
 
 func deal_starting_hands() -> void:
@@ -131,48 +139,111 @@ func resolve_round() -> void:
 	print("Player 2: ", player_2_played.value)
 
 	if card_beats(player_1_played.value, player_2_played.value):
-		print("PLAYER 1 WINS!")
+		print("PLAYER 1 WINS ROUND!")
 		player_1.score += 1
-
-		print("Player 1 score: ", player_1.score)
-		print("Player 2 score: ", player_2.score)
+		print("SCORE: ", player_1.score, " : ", player_2.score)
 
 		finish_round()
 
 	elif card_beats(player_2_played.value, player_1_played.value):
-		print("PLAYER 2 WINS!")
+		print("PLAYER 2 WINS ROUND!")
 		player_2.score += 1
-
-		print("Player 1 score: ", player_1.score)
-		print("Player 2 score: ", player_2.score)
+		print("SCORE: ", player_1.score, " : ", player_2.score)
 
 		finish_round()
 
 	else:
 		print("TIE!")
+		print("NO POINT")
 
-		# Tie-break system comes later.
-		print("Tie-break system not implemented yet.")
-	
-	
+		finish_round()
 func finish_round() -> void:
+	# Someone reached 3 points.
 	if player_1.score >= POINTS_TO_WIN:
-		print("PLAYER 1 WINS THE MATCH!")
+		end_game("PLAYER 1 WINS!")
 		return
 
 	if player_2.score >= POINTS_TO_WIN:
-		print("PLAYER 2 WINS THE MATCH!")
+		end_game("PLAYER 2 WINS!")
 		return
 
 	remove_played_cards()
+
+	# Five normal cards/rounds have now been completed.
+	if round_number >= NORMAL_ROUNDS:
+		finish_five_rounds()
+		return
 
 	round_number += 1
 
 	print("----- ROUND ", round_number, " -----")
 
 	reset_round_state()
-
 	display_player_hand()
+	update_ui()
+	
+func finish_five_rounds() -> void:
+	print("----- FIVE ROUNDS COMPLETE -----")
+
+	print("FINAL SCORE: ", player_1.score, " : ", player_2.score)
+
+	if player_1.score > player_2.score:
+		end_game("PLAYER 1 WINS!")
+
+	elif player_2.score > player_1.score:
+		end_game("PLAYER 2 WINS!")
+
+	else:
+		print("SCORE TIED!")
+
+		start_tie_break()
+
+func start_tie_break() -> void:
+	tie_break_active = true
+	tie_break_round = 0
+
+	print("===== TIE-BREAK =====")
+
+	play_tie_break()
+
+func play_tie_break() -> void:
+	tie_break_round += 1
+
+	print("----- TIE-BREAK ", tie_break_round, " -----")
+
+	if deck.cards.size() < 2:
+		end_game("DRAW GAME")
+		return
+
+	var player_1_tie_card := deck.draw()
+	var player_2_tie_card := deck.draw()
+
+	print("P1 TIE-BREAK CARD: ", player_1_tie_card.value)
+	print("P2 TIE-BREAK CARD: ", player_2_tie_card.value)
+
+	if card_beats(player_1_tie_card.value, player_2_tie_card.value):
+		print("PLAYER 1 WINS TIE-BREAK!")
+		end_game("PLAYER 1 WINS!")
+
+	elif card_beats(player_2_tie_card.value, player_1_tie_card.value):
+		print("PLAYER 2 WINS TIE-BREAK!")
+		end_game("PLAYER 2 WINS!")
+
+	else:
+		print("TIE AGAIN!")
+
+		play_tie_break()
+
+func end_game(result: String) -> void:
+	print("========================")
+	print("       GAME OVER")
+	print(result)
+	print("========================")
+
+	play_button.disabled = true
+	player_2_play_button.disabled = true
+
+	tie_break_active = false
 	
 func card_beats(attacker: int, defender: int) -> bool:
 	# Assassin beats King.
@@ -202,3 +273,8 @@ func reset_round_state() -> void:
 	
 	play_button.disabled = false
 	player_2_play_button.disabled = false
+
+func update_ui() -> void:
+	player_1_score_label.text = "PLAYER 1  |  SCORE: %d" % player_1.score
+	player_2_score_label.text = "PLAYER 2  |  SCORE: %d" % player_2.score
+	round_label.text = "ROUND %d" % round_number

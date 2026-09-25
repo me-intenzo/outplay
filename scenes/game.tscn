@@ -31,18 +31,42 @@ text = "PLAY CARD"
 
 [node name="OpponentHand" type="HBoxContainer" parent="." unique_id=1819817692]
 layout_mode = 0
-offset_top = -400.0
+offset_top = -350.0
 offset_right = 40.0
-offset_bottom = -360.0
+offset_bottom = -310.0
 theme_override_constants/separation = 20
 
 [node name="Player2PlayButton" type="Button" parent="." unique_id=2005226320]
 layout_mode = 0
 offset_left = 297.0
-offset_top = -434.0
+offset_top = -418.0
 offset_right = 419.0
-offset_bottom = -403.0
+offset_bottom = -387.0
 text = "PLAYER 2 PLAY"
+
+[node name="Player1Score" type="Label" parent="." unique_id=1183542892]
+layout_mode = 0
+offset_left = -285.0
+offset_top = -486.0
+offset_right = -120.0
+offset_bottom = -463.0
+text = "PLAYER 1  |  SCORE: 0"
+
+[node name="Player2Score" type="Label" parent="." unique_id=739297374]
+layout_mode = 0
+offset_left = 792.0
+offset_top = -482.0
+offset_right = 957.0
+offset_bottom = -459.0
+text = "PLAYER 2  |  SCORE: 0"
+
+[node name="RoundLabel" type="Label" parent="." unique_id=797195703]
+layout_mode = 0
+offset_left = 324.0
+offset_top = -488.0
+offset_right = 397.0
+offset_bottom = -465.0
+text = "ROUND 1"
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="Player2PlayButton" to="." method="_on_player_2_play_button_pressed"]
