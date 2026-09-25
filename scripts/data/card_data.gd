@@ -1,9 +1,10 @@
 class_name CardData
 extends RefCounted
 
-
-var value: int
+var true_value: int
+var displayed_value: int
 
 
 func _init(card_value: int) -> void:
-	value = card_value
+	true_value = card_value
+	displayed_value = card_value

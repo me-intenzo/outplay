@@ -9,11 +9,8 @@ var selected := false
 
 func setup(data: CardData) -> void:
 	card_data = data
-
-	texture_normal = get_card_texture(data.value)
-
+	texture_normal = get_card_texture(data.displayed_value)
 	custom_minimum_size = Vector2(128, 128)
-
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
@@ -23,7 +20,7 @@ func get_card_texture(value: int) -> Texture2D:
 
 	if value == 9:
 		return load("res://assets/cards/card_king.png")
-
+	print("REFRESH CARD: ", card_data.true_value, " -> ", card_data.displayed_value)
 	return load("res://assets/cards/card_%d.png" % value)
 
 
@@ -47,3 +44,9 @@ func setup_hidden(data: CardData) -> void:
 	texture_normal = load("res://assets/cards/card_back.png")
 	custom_minimum_size = Vector2(128, 128)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+func refresh_visual() -> void:
+	if card_data == null:
+		return
+
+	texture_normal = get_card_texture(card_data.displayed_value)
